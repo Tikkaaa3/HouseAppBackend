@@ -1,0 +1,39 @@
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Build output
+dist/
+coverage/
+*.tsbuildinfo
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Prisma
+prisma/generated/
+src/generated/
+
+# Logs
+logs
+*.log
+*.log.*
+debug.log
+*.pid
+*.seed
+
+# Docker
+docker-data/
+.docker/
+
+# Mac/OS
+.DS_Store
+
