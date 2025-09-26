@@ -35,4 +35,22 @@ model House {
   updatedAt DateTime @updatedAt
 
   users User[]
+  items Item[]
+}
+
+model Item {
+  id         String   @id @default(cuid())
+  houseId    String
+  house      House    @relation(fields: [houseId], references: [id], onDelete: Cascade)
+  name       String
+  category   String
+  unit       String
+  tags       String[] @default([])
+  isArchived Boolean  @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([houseId, name])
+  @@index([houseId, isArchived])
 }
