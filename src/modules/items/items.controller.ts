@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { list, addItem, removeItem } from "./items.service";
+import { list, addItem, removeItem, updateItem } from "./items.service";
 
 export async function postAddItem(req: Request, res: Response) {
   try {
@@ -52,5 +52,72 @@ export async function deleteItem(req: Request, res: Response) {
     const msg = String(e.message);
     if (msg === "item_not_found") return res.status(404).json({ error: msg });
     else return res.status(500).json({ error: "remove_item_failed" });
+  }
+}
+
+export async function patchUpdateItem(req: Request, res: Response) {
+  try {
+    if (!req.user.houseId) {
+      return res.status(409).json({ error: "not_in_house" });
+    }
+
+    const id = String(req.params.id).trim();
+    if (!id) {
+      return res.status(400).json({ error: "invalid_id" });
+    }
+
+    const payload: any = {};
+
+    if (typeof req.body.name === "string") {
+      payload.name = req.body.name.trim();
+    }
+
+    if (typeof req.body.category === "string") {
+      payload.category = req.body.category.trim();
+    }
+
+    if (typeof req.body.unit === "string") {
+      payload.unit = req.body.unit.trim();
+    }
+
+    if (req.body.tags !== undefined) {
+      if (!Array.isArray(req.body.tags)) {
+        return res.status(400).json({ error: "invalid_tags" });
+      }
+      payload.tags = req.body.tags;
+    }
+
+    if (Object.keys(payload).length === 0) {
+      return res.status(400).json({ error: "no_fields" });
+    }
+
+    console.log("PATCH /items/:id", {
+      id: req.params.id,
+      body: req.body,
+      user: req.user?.id,
+      houseId: req.user?.houseId,
+    });
+    const item = await updateItem({
+      houseId: req.user.houseId,
+      id,
+      ...payload,
+    });
+
+    return res.status(200).json(item);
+  } catch (e: any) {
+    const msg = String(e.message);
+    console.error("updateItem error:", e);
+    if (msg === "item_not_found") return res.status(404).json({ error: msg });
+    if (msg === "item_exists") return res.status(409).json({ error: msg });
+    if (
+      msg === "invalid_name" ||
+      msg === "invalid_category" ||
+      msg === "invalid_unit" ||
+      msg === "invalid_tags" ||
+      msg === "no_fields"
+    ) {
+      return res.status(400).json({ error: msg });
+    }
+    return res.status(500).json({ error: "update_item_failed" });
   }
 }

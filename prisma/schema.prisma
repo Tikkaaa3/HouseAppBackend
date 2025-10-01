@@ -34,8 +34,9 @@ model House {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  users User[]
-  items Item[]
+  users         User[]
+  items         Item[]
+  shoppingLists ShoppingList[]
 }
 
 model Item {
@@ -48,9 +49,47 @@ model Item {
   tags       String[] @default([])
   isArchived Boolean  @default(false)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  ShoppingListItem ShoppingListItem[]
 
   @@unique([houseId, name])
   @@index([houseId, isArchived])
+}
+
+model ShoppingList {
+  id         String  @id @default(cuid())
+  houseId    String
+  house      House   @relation(fields: [houseId], references: [id], onDelete: Cascade)
+  title      String
+  isArchived Boolean @default(false)
+
+  items ShoppingListItem[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([houseId, title])
+  @@index([houseId, isArchived])
+}
+
+model ShoppingListItem {
+  id     String       @id @default(cuid())
+  listId String
+  list   ShoppingList @relation(fields: [listId], references: [id], onDelete: Cascade)
+
+  itemId String
+  item   Item   @relation(fields: [itemId], references: [id], onDelete: Restrict)
+
+  quantity     Decimal @db.Decimal(10, 2) // or String if you prefer to start simple
+  unitOverride String? // if null, use Item.unit
+  note         String?
+  isChecked    Boolean @default(false)
+  checkedById  String? // optional: FK to User later
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([listId, itemId]) // an item appears at most once per list
+  @@index([listId, isChecked])
 }

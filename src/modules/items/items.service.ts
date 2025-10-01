@@ -15,6 +15,15 @@ type AddInput = {
   tags?: string[];
 };
 
+type UpdateInput = {
+  id: string;
+  houseId: string;
+  name?: string;
+  category?: string;
+  unit?: string;
+  tags?: string[];
+};
+
 type RemoveInput = { houseId: string; id: string };
 
 export async function list(obj: Obj): Promise<Item[]> {
@@ -77,4 +86,56 @@ export async function removeItem(input: RemoveInput): Promise<void> {
     data: { isArchived: true },
   });
   return;
+}
+
+export async function updateItem(input: UpdateInput): Promise<Item> {
+  const existing = await prisma.item.findUnique({ where: { id: input.id } });
+  if (!existing || existing.houseId !== input.houseId) {
+    throw new Error("item_not_found");
+  }
+
+  const name = input.name !== undefined ? input.name.trim() : undefined;
+  const category =
+    input.category !== undefined ? input.category.trim() : undefined;
+  const unit = input.unit !== undefined ? input.unit.trim() : undefined;
+  const tags = input.tags; // may be undefined
+
+  const data: Partial<Pick<Item, "name" | "category" | "unit" | "tags">> = {};
+
+  if (name !== undefined) {
+    if (!name) throw new Error("invalid_name");
+    if (name !== existing.name) {
+      const dup = await prisma.item.findUnique({
+        where: { houseId_name: { houseId: input.houseId, name } },
+      });
+      if (dup && dup.id !== existing.id) throw new Error("item_exists");
+    }
+    data.name = name;
+  }
+
+  if (category !== undefined) {
+    if (!category) throw new Error("invalid_category");
+    data.category = category;
+  }
+
+  if (unit !== undefined) {
+    if (!unit) throw new Error("invalid_unit");
+    data.unit = unit;
+  }
+
+  if (tags !== undefined) {
+    if (!Array.isArray(tags)) throw new Error("invalid_tags");
+    data.tags = tags;
+  }
+
+  if (Object.keys(data).length === 0) {
+    throw new Error("no_fields");
+  }
+
+  const updated = await prisma.item.update({
+    where: { id: existing.id },
+    data,
+  });
+
+  return updated;
 }
