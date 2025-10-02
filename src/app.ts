@@ -5,6 +5,7 @@ import houseRoutes from "./modules/houses/houses.routes";
 import itemRoutes from "./modules/items/items.routes";
 import shoppingRoutes from "./modules/shopping/shopping.routes";
 import choreRoutes from "./modules/chores/chores.routes";
+import recipeRoutes from "./modules/recipes/recipes.routes";
 
 const app = express();
 app.use(express.json());
@@ -16,5 +17,6 @@ app.use("/houses", houseRoutes);
 app.use("/items", itemRoutes);
 app.use("/", shoppingRoutes);
 app.use("/", choreRoutes);
+app.use("/", recipeRoutes);
 
 export default app;

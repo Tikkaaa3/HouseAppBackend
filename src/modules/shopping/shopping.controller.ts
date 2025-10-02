@@ -5,6 +5,7 @@ import {
   getList,
   removeLine,
   archiveList,
+  listLists,
 } from "./shopping.service";
 
 export async function postCreateList(req: Request, res: Response) {
@@ -58,6 +59,18 @@ export async function postAddLine(req: Request, res: Response) {
       return res.status(404).json({ error: m });
     if (m === "list_archived") return res.status(409).json({ error: m });
     return res.status(500).json({ error: "add_line_failed" });
+  }
+}
+
+export async function getShoppingListsIndex(req: Request, res: Response) {
+  try {
+    if (!req.user.houseId)
+      return res.status(409).json({ error: "not_in_house" });
+    const archived = req.query.archived === "true";
+    const lists = await listLists({ houseId: req.user.houseId, archived });
+    return res.status(200).json(lists);
+  } catch {
+    return res.status(500).json({ error: "list_shopping_lists_failed" });
   }
 }
 

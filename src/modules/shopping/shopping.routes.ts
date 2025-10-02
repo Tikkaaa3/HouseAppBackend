@@ -6,11 +6,13 @@ import {
   getListById,
   deleteLine,
   postArchiveList,
+  getShoppingListsIndex,
 } from "./shopping.controller";
 
 const r = Router();
 
 r.post("/shopping-lists", requireAuth, postCreateList);
+r.get("/shopping-lists", requireAuth, getShoppingListsIndex);
 r.get("/shopping-lists/:id", requireAuth, getListById);
 r.post("/shopping-lists/:id/items", requireAuth, postAddLine);
 r.delete("/shopping-lists/:listId/items/:lineId", requireAuth, deleteLine);

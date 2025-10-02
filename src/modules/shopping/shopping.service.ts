@@ -78,6 +78,25 @@ export async function addLine(input: {
   });
 }
 
+export async function listLists(input: {
+  houseId: string;
+  archived?: boolean;
+}) {
+  const archived = input.archived ?? false;
+  return prisma.shoppingList.findMany({
+    where: { houseId: input.houseId, isArchived: archived },
+    orderBy: { updatedAt: "desc" },
+    select: {
+      id: true,
+      title: true,
+      isArchived: true,
+      createdAt: true,
+      updatedAt: true,
+      _count: { select: { items: true } },
+    },
+  });
+}
+
 export async function getList(input: {
   houseId: string;
   listId: string;
