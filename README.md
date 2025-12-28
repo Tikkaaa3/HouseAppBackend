@@ -1,4 +1,4 @@
-# 🏠 House App Backend
+# House App Backend
 
 Backend for the **House App** — a collaborative household management tool where users can share a house, manage chores, shopping lists, recipes, and items.
 
@@ -6,36 +6,36 @@ Built with **Node.js + TypeScript + Express + Prisma + PostgreSQL**.
 
 ---
 
-## ✨ Features
+## Features
 
-- 🔑 **Authentication**
+ **Authentication**
   - Signup with Argon2 password hashing
   - Login with JWT
   - Auth middleware & `/auth/me` route
-- 🏡 **House management**
+   **House management**
   - Create, join, leave a house
   - Members list per house
-- ✅ **Chores**
+   **Chores**
   - Create chores (daily/weekly/monthly)
   - Assign to house members
   - Mark chores as completed
-- 🛒 **Shopping Lists**
+   **Shopping Lists**
   - Shared shopping lists within a house
   - Add/remove/update items
-- 📦 **Global Items**
+   **Global Items**
   - Manage global items with category and unit
   - Categories: kitchen, cleaning, fridge, pantry, etc.
   - Units: pcs, g, kg, L, ml, etc.
-- 🍽️ **Recipes**
+   **Recipes**
   - Create, edit, delete recipes
   - Add ingredients from items
   - Suggest recipes based on available items
-- 👤 **Profile**
+   **Profile**
   - Fetch user info (name, email, house)
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - [Node.js](https://nodejs.org/) + [TypeScript](https://www.typescriptlang.org/)  
 - [Express](https://expressjs.com/)  
@@ -46,7 +46,7 @@ Built with **Node.js + TypeScript + Express + Prisma + PostgreSQL**.
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Requirements
 
@@ -80,7 +80,7 @@ npx prisma migrate dev --name init
 npm run dev
 ```
 
-## 📡 API Overview
+## API Overview
 
 ### Auth
 -	POST /auth/signup → { user, token }
@@ -124,7 +124,7 @@ npm run dev
 -	POST /shopping-lists/:id/items → Add item to list
 - DELETE /shopping-lists/:id/items/:lineId → Remove item from list
 
-  ## 📂 Project Structure
+  ## Project Structure
   src/
 ├─ modules/
 │  ├─ auth/         # signup, login, auth middleware
@@ -138,12 +138,12 @@ npm run dev
 ├─ app.ts           # express app
 └─ server.ts        # server entry
 
-## 🧑‍🤝‍🧑 Contributing
+## Contributing
 	1.	Fork the repo
 	2.	Create a branch: git checkout -b feature/my-feature
 	3.	Commit changes: git commit -m "add my feature"
 	4.	Push branch: git push origin feature/my-feature
 	5.	Open a Pull Request
 
-## 📜 License
+## License
 [MIT License](./LICENSE) © 2025 Emre Tolga Kaptan
