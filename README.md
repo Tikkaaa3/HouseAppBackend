@@ -1,6 +1,6 @@
-# House App Backend
+# Homed Backend
 
-Backend for the **House App** — a collaborative household management tool where users can share a house, manage chores, shopping lists, recipes, and items.
+Backend for the **Homed**
 
 Built with **Node.js + TypeScript + Express + Prisma + PostgreSQL**.
 
@@ -126,16 +126,27 @@ npm run dev
 
   ## Project Structure
   src/
+  
 ├─ modules/
+
 │  ├─ auth/         # signup, login, auth middleware
+
 │  ├─ houses/       # house create/join/leave
+
 │  ├─ items/        # global items CRUD
+
 │  ├─ chores/       # chores CRUD + complete + assign
+
 │  ├─ recipes/      # recipes CRUD + suggest
+
 │  └─ shopping/     # shopping lists
+
 ├─ middleware/      # auth checks
+
 ├─ prisma/          # schema + migrations
+
 ├─ app.ts           # express app
+
 └─ server.ts        # server entry
 
 ## Contributing
